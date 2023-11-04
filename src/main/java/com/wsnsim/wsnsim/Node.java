@@ -6,6 +6,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+
 
 public class Node {
     private int id;
@@ -14,7 +16,7 @@ public class Node {
     private double energy;
     private boolean isOn;
 
-    private boolean isCH;
+    private ArrayList<Boolean> isCH = new ArrayList<>();
     private int radius;
     //private NodeState state;
     //public NodeState m_NodeState;
@@ -66,12 +68,12 @@ public class Node {
         isOn = on;
     }
 
-    public boolean isCH() {
+    public ArrayList<Boolean> getIsCH() {
         return isCH;
     }
 
-    public void setCH(boolean CH) {
-        isCH = CH;
+    public void setIsCH(ArrayList<Boolean> isCH) {
+        this.isCH = isCH;
     }
 
     public int getRadius() {
@@ -82,10 +84,10 @@ public class Node {
         this.radius = radius;
     }
 
-    public void draw(GraphicsContext gc, double canvasWidth, double canvasHeight, int circleSize) {
+    public void draw(GraphicsContext gc, int circleSize, int round_number) {
         Color color = Color.DARKCYAN;
 
-        if (isCH) {
+        if (isCH.get(round_number).equals(true)) {
             color = Color.RED;
         }
         /*
@@ -126,12 +128,12 @@ public class Node {
         gc.setLineWidth(1.0); // Set the width of the arrow line
 
         // Calculate the arrow starting point (center of the current node)
-        double startX = x + circleSize;
-        double startY = y + circleSize;
+        double startX = x + (circleSize / 2);
+        double startY = y + (circleSize / 2);
 
         // Calculate the arrow ending point (center of the target node)
-        double targetX = targetNode.getX() + circleSize;
-        double targetY = targetNode.getY() + circleSize;
+        double targetX = targetNode.getX() + (circleSize / 2);
+        double targetY = targetNode.getY() + (circleSize / 2);
 
         // Draw the arrow line
         gc.strokeLine(startX, startY, targetX, targetY);

@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class SimController implements Initializable {
@@ -22,7 +23,6 @@ public class SimController implements Initializable {
     private Slider ch_density;
     @FXML
     private TextField nodes_number;
-    private ArrayList<Node> listNodes= new ArrayList<>();
     @FXML
     private TextField round_duration;
     @FXML
@@ -36,6 +36,7 @@ public class SimController implements Initializable {
     @FXML
     private Button back;
 
+    private Director director;
     @FXML
     public void quit() {
         Platform.exit();
@@ -62,33 +63,11 @@ public class SimController implements Initializable {
 
         warning.setVisible(false);
 
-        listNodes.clear();
     }
 
     public void draw(GraphicsContext gc, int numNodes, double canvasWidth, double canvasHeight, int circleSize) {
-        for (int i = 1; i <= numNodes; i++) {
-            boolean isOverlap = true;
-            int x = 0;
-            int y = 0;
-
-            while (isOverlap) {
-                isOverlap = false;
-                x = (int) (Math.random() * (canvasWidth - circleSize));
-                y = (int) (Math.random() * (canvasHeight - circleSize));
-
-                // Check for overlap with existing circles
-                for (Node existing_node : listNodes) {
-                    if (existing_node.intersects(x, y, circleSize)) {
-                        isOverlap = true;
-                        break;
-                    }
-                }
-            }
-
-            Node node = new Node(i, x, y);
-            listNodes.add(node);
-            node.draw(gc, canvasWidth, canvasHeight, circleSize);
-        }
+        director = Director.getInstance(numNodes, canvasWidth, canvasHeight, circleSize);
+        director.drawNodes(gc);
     }
 
     @FXML
@@ -106,10 +85,15 @@ public class SimController implements Initializable {
             round_duration.setDisable(true);
             simuler.setDisable(true);
 
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("Valeur Invalide");
             errorAlert.setContentText("Le nombre de noeuds doit être un nombre.");
+            errorAlert.showAndWait();
+        } catch (Exception e) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Erreur");
+            errorAlert.setContentText("Erreur Inattandu.");
             errorAlert.showAndWait();
         }
     }
@@ -117,20 +101,17 @@ public class SimController implements Initializable {
     @FXML
     public void test() {
         //test:
-        Node node1 = listNodes.get(0);
-        Node node2 = listNodes.get(1);
-        node1.transmit(node2, canvas.getGraphicsContext2D(), 10);
+        Node node1 = director.getListNodes().get(0);
+        Node node2 = director.getListNodes().get(1);
+        node1.transmit(node2, canvas.getGraphicsContext2D(), 20);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ch_density.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                DecimalFormat df = new DecimalFormat();
-                df.setMaximumFractionDigits(1);
-                density_percentage.setText(df.format(ch_density.getValue()) + "%");
-            }
+        ch_density.valueProperty().addListener((observableValue, number, t1) -> {
+            DecimalFormat df = new DecimalFormat();
+            df.setMaximumFractionDigits(1);
+            density_percentage.setText(df.format(ch_density.getValue()) + "%");
         });
     }
 }
