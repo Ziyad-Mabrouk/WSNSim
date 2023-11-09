@@ -35,4 +35,23 @@ public class RandomGenerator {
         Random random = new Random();
         return random.nextBoolean();
     }
+
+    public boolean chSelection(Node node, int roundId, int P) {
+        if (node.getIsCH().get(roundId)) {
+            return false;
+        }
+        Random random = new Random();
+        double rnd = random.nextDouble();
+        double T = P /(1-P*(roundId%(1/P)));
+
+        return (rnd < T);
+    }
+
+    public boolean chSelection(int roundId, double P) {
+        Random random = new Random();
+        double rnd = random.nextDouble();
+        double T = P /(1-P*(roundId%(1/P)));
+
+        return (rnd < T);
+    }
 }

@@ -65,8 +65,8 @@ public class SimController implements Initializable {
 
     }
 
-    public void draw(GraphicsContext gc, int numNodes, double canvasWidth, double canvasHeight, int circleSize) {
-        director = Director.getInstance(numNodes, canvasWidth, canvasHeight, circleSize);
+    public void draw(GraphicsContext gc, int numNodes, double CHdensity, double canvasWidth, double canvasHeight, int circleSize) {
+        director = Director.getInstance(numNodes, CHdensity, canvasWidth, canvasHeight, circleSize);
         director.drawNodes(gc);
     }
 
@@ -79,7 +79,7 @@ public class SimController implements Initializable {
                 warning.setVisible(true);
                 nodes_number.setText("100");
             }
-            draw(canvas.getGraphicsContext2D(), numNodes, canvas.getWidth(), canvas.getHeight(), 20);
+            draw(canvas.getGraphicsContext2D(), numNodes, ch_density.getValue(), canvas.getWidth(), canvas.getHeight(), 20);
             ch_density.setDisable(true);
             nodes_number.setDisable(true);
             round_duration.setDisable(true);

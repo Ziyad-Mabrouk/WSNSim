@@ -13,7 +13,7 @@ public class Node {
     private int id;
     private int x;
     private int y;
-    private double energy;
+    private ArrayList<Double> energy = new ArrayList<>();
     private boolean isOn;
 
     private ArrayList<Boolean> isCH = new ArrayList<>();
@@ -52,11 +52,11 @@ public class Node {
         this.y = y;
     }
 
-    public double getEnergy() {
-        return energy;
+    public ArrayList<Double> getEnergy() {
+        return this.energy;
     }
 
-    public void setEnergy(double energy) {
+    public void setEnergy(ArrayList<Double> energy) {
         this.energy = energy;
     }
 
