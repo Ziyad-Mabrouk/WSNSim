@@ -19,22 +19,21 @@
         <Label id="round_duration_label" layoutX="328.0" layoutY="15.0" text="Durée de tour (round):" />
         <TextField id="round_duration" fx:id="round_duration" layoutX="458.0" layoutY="11.0" prefHeight="25.0" prefWidth="119.0" promptText="durée en secondes" />
         <Separator layoutX="5.0" layoutY="97.0" prefHeight="2.0" prefWidth="591.0" />
-        <Separator layoutX="5.0" layoutY="43.0" prefHeight="2.0" prefWidth="591.0" />
-        <Button id="back" fx:id="back" disable="true" layoutX="17.0" layoutY="503.0" mnemonicParsing="false" text="Précédent" />
-        <Button id="next" fx:id="next" disable="true" layoutX="502.0" layoutY="503.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Suivant" />
-        <Canvas id="canvas" fx:id="canvas" blendMode="DARKEN" height="354.0" layoutX="9.0" layoutY="140.0" width="582.0">
+        <Button id="back" fx:id="back" disable="true" layoutX="20.0" layoutY="503.0" mnemonicParsing="false" text="Précédent" />
+        <Button id="next" fx:id="next" disable="true" layoutX="505.0" layoutY="503.0" mnemonicParsing="false" onAction="#nextRound" prefHeight="25.0" prefWidth="76.0" text="Suivant" />
+        <Canvas id="canvas" fx:id="canvas" blendMode="DARKEN" height="354.0" layoutX="9.0" layoutY="142.0" width="582.0">
             <cursor>
                 <Cursor fx:constant="CROSSHAIR" />
             </cursor>
         </Canvas>
-        <Button id="simuler" fx:id="simuler" layoutX="14.0" layoutY="107.0" mnemonicParsing="false" onAction="#start" text="Simuler" />
-        <Label id="round_number" fx:id="round_number" layoutX="159.0" layoutY="507.0" prefHeight="17.0" prefWidth="52.0" text="Round: 0" />
-        <Button id="pause" layoutX="89.0" layoutY="107.0" mnemonicParsing="false" text="Pause" />
-        <Button id="reset" layoutX="427.0" layoutY="107.0" mnemonicParsing="false" onAction="#reset" text="Réinitialiser" />
-        <Button id="quit" layoutX="524.0" layoutY="107.0" mnemonicParsing="false" onAction="#quit" text="Quitter" />
-        <ProgressBar id="progress_bar" fx:id="round_progress" layoutX="228.0" layoutY="507.0" prefWidth="200.0" progress="0.0" />
+        <Button id="simuler" fx:id="simuler" layoutX="18.0" layoutY="108.0" mnemonicParsing="false" onAction="#start" text="Simuler" />
+        <Label id="round_number" fx:id="round_number" layoutX="162.0" layoutY="507.0" prefHeight="17.0" prefWidth="52.0" text="Round 0" />
+        <Button id="pause" layoutX="93.0" layoutY="108.0" mnemonicParsing="false" text="Pause" />
+        <Button id="reset" layoutX="431.0" layoutY="108.0" mnemonicParsing="false" onAction="#reset" text="Réinitialiser" />
+        <Button id="quit" layoutX="528.0" layoutY="108.0" mnemonicParsing="false" onAction="#quit" text="Quitter" />
+        <ProgressBar id="progress_bar" fx:id="round_progress" layoutX="231.0" layoutY="507.0" prefWidth="200.0" progress="0.0" />
       <Label id="density_percentage" fx:id="density_percentage" layoutX="551.0" layoutY="60.0" text="0%" />
       <Label id="warning" fx:id="warning" layoutX="247.0" layoutY="15.0" prefHeight="17.0" prefWidth="56.0" text="*max=100" textFill="#f40000" visible="false" />
-      <Button id="test_button" layoutX="258.0" layoutY="107.0" mnemonicParsing="false" onAction="#test" text="Test Button" textFill="RED" />
+      <Button id="test_button" layoutX="262.0" layoutY="108.0" mnemonicParsing="false" onAction="#test" text="Test Button" textFill="RED" />
     </children>
 </Pane>
