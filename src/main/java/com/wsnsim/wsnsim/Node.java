@@ -7,6 +7,11 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class Node {
@@ -14,10 +19,10 @@ public class Node {
     private int x;
     private int y;
     private ArrayList<Double> energy = new ArrayList<>();
-    private boolean isOn;
+    private boolean isOn = true;
 
     private ArrayList<Boolean> isCH = new ArrayList<>();
-    private int radius;
+    private int radius = 50;
     //private NodeState state;
     //public NodeState m_NodeState;
     //public ClusterHead m_ClusterHead;
@@ -87,8 +92,14 @@ public class Node {
     public void draw(GraphicsContext gc, int circleSize, int round_number) {
         Color color = Color.DARKCYAN;
 
+        if (wasCH()) {
+            color = Color.SKYBLUE;
+        }
+
         if (isCH.get(round_number).equals(true)) {
             color = Color.RED;
+            //gc.setFill(color);
+            //gc.strokeOval(x-radius/2, y-radius/2, radius,radius);
         }
         /*
         if (!isOn) {
@@ -150,11 +161,12 @@ public class Node {
         gc.strokeLine(targetX, targetY, arrowX1, arrowY1);
         gc.strokeLine(targetX, targetY, arrowX2, arrowY2);
 
+        //handle energy dissipation
         return false;
     }
 
-    public boolean receive(Node node){
-        return false;
+    public void receive(Node node){
+
     }
 
     public void listen(){
@@ -173,5 +185,37 @@ public class Node {
 
         // Check if distance is greater than or equal to minimum allowed distance
         return distance < minDistance;
+    }
+
+    public boolean clicked(double x, double y, int circleSize) {
+        return Math.sqrt(Math.pow(this.x + (circleSize / 2) - x, 2)) < (circleSize / 2) && Math.sqrt(Math.pow(this.y + (circleSize / 2) -y, 2)) < (circleSize / 2);
+    }
+
+    public boolean isWithinCommunicationRadius(Node node) {
+        double distance = Math.sqrt(Math.pow(this.x - node.getX(), 2) + Math.pow(this.y - node.getY(), 2));
+        return distance < this.radius + node.radius;
+    }
+
+    public ArrayList<Node> getNeighbors(int roundId) {
+        Director director = Director.getInstance();
+        ArrayList<Node> neighbors = new ArrayList<>();
+        ArrayList<Node> listNodes = director.getCurrentNonCHList(roundId);
+
+        for (Node node : listNodes) {
+            if (isWithinCommunicationRadius(node)) {
+                neighbors.add(node);
+            }
+        }
+
+        return neighbors;
+    }
+
+    public boolean wasCH() {
+        for (Boolean wasCH : isCH) {
+            if(wasCH){
+                return true;
+            }
+        }
+        return false;
     }
 }

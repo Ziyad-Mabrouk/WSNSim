@@ -14,6 +14,7 @@ public class SimApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 600, 548);
         stage.setTitle("Simulateur WSN");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 

@@ -1,17 +1,15 @@
 package com.wsnsim.wsnsim;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class SimController implements Initializable {
@@ -19,6 +17,8 @@ public class SimController implements Initializable {
     private Label density_percentage;
     @FXML
     private Label warning;
+    @FXML
+    private Label round_number;
     @FXML
     private Slider ch_density;
     @FXML
@@ -63,11 +63,21 @@ public class SimController implements Initializable {
 
         warning.setVisible(false);
 
+        director.clear();
+        round_number.setText("Round " + director.getRound_number());
     }
 
     public void draw(GraphicsContext gc, int numNodes, double CHdensity, double canvasWidth, double canvasHeight, int circleSize) {
         director = Director.getInstance(numNodes, CHdensity, canvasWidth, canvasHeight, circleSize);
         director.drawNodes(gc);
+    }
+
+    @FXML
+    public void nextRound() {
+        canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        director = Director.getInstance();
+        director.nextRound(canvas.getGraphicsContext2D(), ch_density.getValue());
+        round_number.setText("Round " + director.getRound_number());
     }
 
     @FXML
@@ -84,6 +94,7 @@ public class SimController implements Initializable {
             nodes_number.setDisable(true);
             round_duration.setDisable(true);
             simuler.setDisable(true);
+            next.setDisable(false);
 
         } catch (NumberFormatException e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -101,9 +112,10 @@ public class SimController implements Initializable {
     @FXML
     public void test() {
         //test:
-        Node node1 = director.getListNodes().get(0);
-        Node node2 = director.getListNodes().get(1);
-        node1.transmit(node2, canvas.getGraphicsContext2D(), 20);
+        //Node node1 = director.getListNodes().get(0);
+        //Node node2 = director.getListNodes().get(1);
+        //node1.transmit(node2, canvas.getGraphicsContext2D(), 20);
+        director.setUp(canvas.getGraphicsContext2D(),0, 20);
     }
 
     @Override
@@ -113,5 +125,35 @@ public class SimController implements Initializable {
             df.setMaximumFractionDigits(1);
             density_percentage.setText(df.format(ch_density.getValue()) + "%");
         });
+        canvas.setOnMouseMoved(mouseEvent -> {
+            canvas.setCursor(Cursor.CROSSHAIR);
+            for (Node node : director.getListNodes()) {
+                if(node.clicked(mouseEvent.getX(), mouseEvent.getY(), 20)) {
+                    canvas.setCursor(Cursor.HAND);
+                    break;
+                }
+            }
+        });
+        canvas.setOnMouseClicked(mouseEvent -> {
+            //System.out.println(mouseEvent.getX());
+            //System.out.println(mouseEvent.getY());
+            for (Node node : director.getListNodes()) {
+                if(node.clicked(mouseEvent.getX(), mouseEvent.getY(), 20)) {
+                    /*
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setHeaderText("node " + node.getId() + " clicked.");
+                    errorAlert.setContentText("show smth");
+                    errorAlert.showAndWait();
+                    */
+
+                    GraphController graphDirector = new GraphController();
+                    graphDirector.load(node);
+
+                    break;
+                }
+            }
+        });
+
     }
+
 }

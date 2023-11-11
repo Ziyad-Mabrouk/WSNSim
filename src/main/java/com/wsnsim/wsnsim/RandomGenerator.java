@@ -36,8 +36,8 @@ public class RandomGenerator {
         return random.nextBoolean();
     }
 
-    public boolean chSelection(Node node, int roundId, int P) {
-        if (node.getIsCH().get(roundId)) {
+    public boolean chSelection(Node node, int roundId, double P) {
+        if (node.wasCH()) {
             return false;
         }
         Random random = new Random();

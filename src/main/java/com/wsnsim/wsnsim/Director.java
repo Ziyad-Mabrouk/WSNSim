@@ -3,6 +3,9 @@ package com.wsnsim.wsnsim;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Director {
     private static Director director;
@@ -29,6 +32,11 @@ public class Director {
         return director;
     }
 
+    public static Director getInstance(){
+        return director;
+    }
+
+
     public void drawNodes(GraphicsContext gc) {
         for (Node node : listNodes) {
             node.draw(gc, circleSize, round_number);
@@ -51,7 +59,7 @@ public class Director {
         return listNodes;
     }
 
-    public ArrayList<Node> getCHList(int roundId) {
+    public ArrayList<Node> getCurrentCHList(int roundId) {
         ArrayList<Node> CHList = new ArrayList<>();
         for (Node node : listNodes) {
             if (node.getIsCH().get(roundId)) {
@@ -61,14 +69,56 @@ public class Director {
         return CHList;
     }
 
-    public ArrayList<Node> getNonCHList(int roundId) {
+    public ArrayList<Node> getCurrentNonCHList(int round_number) {
         ArrayList<Node> NonCHList = new ArrayList<>();
         for (Node node : listNodes) {
-            if (!node.getIsCH().get(roundId)) {
+            if (!node.getIsCH().get(round_number)) {
                 NonCHList.add(node);
             }
         }
         return NonCHList;
+    }
+
+    public ArrayList<Node> getNonCHList() {
+        ArrayList<Node> NonCHList = new ArrayList<>();
+        for (Node node : listNodes) {
+            if (!node.wasCH()) {
+                NonCHList.add(node);
+            }
+        }
+        return NonCHList;
+    }
+
+    public void setUp(GraphicsContext gc,int round_number, int circleSize) {
+        ArrayList<Node> CHList = director.getCurrentCHList(round_number);
+
+        for (Node CH : CHList) {
+            ArrayList<Node> potential_members = CH.getNeighbors(round_number);
+            for (Node pmember : potential_members) {
+                CH.transmit(pmember, gc, circleSize);
+            }
+        }
+    }
+
+    public void nextRound(GraphicsContext gc, double CHdensity) {
+        round_number++;
+        for (Node node : listNodes) {
+            ArrayList<Boolean> isCH = node.getIsCH();
+            isCH.add(randomGenerator.chSelection(node, round_number, CHdensity*0.01));
+            node.setIsCH(isCH);
+            node.draw(gc,circleSize,round_number);
+        }
+        director.setUp(gc,round_number, circleSize);
+
+    }
+
+    public void clear() {
+        round_number = 0;
+        listNodes.clear();
+    }
+
+    public int getRound_number() {
+        return round_number;
     }
 
 }
