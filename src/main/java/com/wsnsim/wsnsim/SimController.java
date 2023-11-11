@@ -12,6 +12,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 
+
 public class SimController implements Initializable {
     @FXML
     private Label density_percentage;
@@ -35,7 +36,6 @@ public class SimController implements Initializable {
     private Button next;
     @FXML
     private Button back;
-
     private Director director;
     @FXML
     public void quit() {
@@ -68,16 +68,21 @@ public class SimController implements Initializable {
     }
 
     public void draw(GraphicsContext gc, int numNodes, double CHdensity, double canvasWidth, double canvasHeight, int circleSize) {
-        director = Director.getInstance(numNodes, CHdensity, canvasWidth, canvasHeight, circleSize);
-        director.drawNodes(gc);
+        director = Director.getInstance(numNodes, CHdensity, canvas.getGraphicsContext2D(), canvasWidth, canvasHeight, circleSize);
+        director.drawNodes();
     }
 
     @FXML
     public void nextRound() {
         canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         director = Director.getInstance();
-        director.nextRound(canvas.getGraphicsContext2D(), ch_density.getValue());
         round_number.setText("Round " + director.getRound_number());
+        director.nextRound(ch_density.getValue());
+        director.setUp();
+
+        canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        director.drawNodes();
+        director.drawChLinks();
     }
 
     @FXML
@@ -115,7 +120,11 @@ public class SimController implements Initializable {
         //Node node1 = director.getListNodes().get(0);
         //Node node2 = director.getListNodes().get(1);
         //node1.transmit(node2, canvas.getGraphicsContext2D(), 20);
-        director.setUp(canvas.getGraphicsContext2D(),0, 20);
+        director.setUp();
+
+        canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        director.drawNodes();
+        director.drawChLinks();
     }
 
     @Override
@@ -155,5 +164,6 @@ public class SimController implements Initializable {
         });
 
     }
+
 
 }

@@ -1,6 +1,7 @@
 package com.wsnsim.wsnsim;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -12,20 +13,22 @@ public class Director {
     private ArrayList<Node> listNodes = new ArrayList<>();
     private final RandomGenerator randomGenerator = new RandomGenerator();
     private int numNodes;
+    private GraphicsContext gc;
     private double canvasWidth;
     private double canvasHeight;
     private int circleSize;
     private int round_number = 0;
 
-    private Director(double canvasWidth, double canvasHeight, int circleSize) {
+    private Director(GraphicsContext gc, double canvasWidth, double canvasHeight, int circleSize) {
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
         this.circleSize = circleSize;
+        this.gc = gc;
     }
 
-    public static Director getInstance(int numNodes, double CHdensity, double canvasWidth, double canvasHeight, int circleSize) {
+    public static Director getInstance(int numNodes, double CHdensity, GraphicsContext gc, double canvasWidth, double canvasHeight, int circleSize) {
         if (director == null) {
-            director = new Director(canvasWidth, canvasHeight, circleSize);
+            director = new Director(gc, canvasWidth, canvasHeight, circleSize);
         }
         director.numNodes = numNodes;
         director.generateNodesList(CHdensity);
@@ -37,7 +40,7 @@ public class Director {
     }
 
 
-    public void drawNodes(GraphicsContext gc) {
+    public void drawNodes() {
         for (Node node : listNodes) {
             node.draw(gc, circleSize, round_number);
         }
@@ -48,9 +51,15 @@ public class Director {
         for (int i = 1; i <= numNodes; i++) {
             ArrayList<Integer> coordinates = randomGenerator.generateNodeCoordinates(canvasWidth, canvasHeight, circleSize, listNodes);
             ArrayList<Boolean> isCH = new ArrayList<>();
+            ArrayList<Double> energy = new ArrayList<>();
             isCH.add(randomGenerator.chSelection(round_number, CHdensity*0.01));
+            energy.add(0.5);
             Node node = new Node(i, coordinates.get(0), coordinates.get(1));
             node.setIsCH(isCH);
+            node.setEnergy(energy);
+            if (isCH.get(0)) {
+                node.setColor(randomGenerator.assignColor());
+            }
             listNodes.add(node);
         }
     }
@@ -89,27 +98,37 @@ public class Director {
         return NonCHList;
     }
 
-    public void setUp(GraphicsContext gc,int round_number, int circleSize) {
-        ArrayList<Node> CHList = director.getCurrentCHList(round_number);
+    public void resetNodes() {
+        for (Node node : listNodes) {
+            node.resetCH();
+        }
+    }
 
+    public void setUp() {
+        ArrayList<Node> CHList = director.getCurrentCHList(round_number);
         for (Node CH : CHList) {
             ArrayList<Node> potential_members = CH.getNeighbors(round_number);
             for (Node pmember : potential_members) {
                 CH.transmit(pmember, gc, circleSize);
+                pmember.receiveCHMsg(CH);
             }
         }
+
     }
 
-    public void nextRound(GraphicsContext gc, double CHdensity) {
+    public void nextRound(double CHdensity) {
         round_number++;
+        resetNodes();
         for (Node node : listNodes) {
             ArrayList<Boolean> isCH = node.getIsCH();
             isCH.add(randomGenerator.chSelection(node, round_number, CHdensity*0.01));
             node.setIsCH(isCH);
+            if (isCH.get(round_number)) {
+                node.setColor(randomGenerator.assignColor());
+            }
             node.draw(gc,circleSize,round_number);
         }
-        director.setUp(gc,round_number, circleSize);
-
+        //director.setUp(round_number);
     }
 
     public void clear() {
@@ -119,6 +138,12 @@ public class Director {
 
     public int getRound_number() {
         return round_number;
+    }
+
+    public void drawChLinks() {
+        for (Node node : listNodes) {
+            node.drawChLink(gc, circleSize);
+        }
     }
 
 }

@@ -20,6 +20,9 @@ public class Node {
     private int y;
     private ArrayList<Double> energy = new ArrayList<>();
     private boolean isOn = true;
+    private Node CH = this;
+    private Color color = Color.DARKCYAN;
+    private double distanceToCH = 0;
 
     private ArrayList<Boolean> isCH = new ArrayList<>();
     private int radius = 50;
@@ -90,24 +93,16 @@ public class Node {
     }
 
     public void draw(GraphicsContext gc, int circleSize, int round_number) {
-        Color color = Color.DARKCYAN;
-
-        if (wasCH()) {
-            color = Color.SKYBLUE;
-        }
-
-        if (isCH.get(round_number).equals(true)) {
-            color = Color.RED;
-            //gc.setFill(color);
-            //gc.strokeOval(x-radius/2, y-radius/2, radius,radius);
-        }
-        /*
         if (!isOn) {
             color = Color.GRAY;
         }
-        */
         gc.setFill(color);
-        gc.fillOval(x, y, circleSize, circleSize);
+        if (isCH.get(round_number).equals(true)) {
+            gc.fillRect(x, y, circleSize, circleSize);
+
+        } else {
+            gc.fillOval(x, y, circleSize, circleSize);
+        }
 
         // Set font size based on circle size
         int fontSize = circleSize / 2;
@@ -134,7 +129,32 @@ public class Node {
 
     }
 
-    public boolean transmit(Node targetNode, GraphicsContext gc, int circleSize){
+    public void updateTxEnergy(double distance) {
+        double Elec = 50 * Math.pow(10, -9);
+        double l = 1.0;
+        double epsFs = 10 * Math.pow(10, -12);
+        double epsMp = 0.0013 * Math.pow(10, -12);
+        double d0 = Math.sqrt(epsFs / epsMp);
+        double Etx;
+        if (distance < d0) {
+            Etx = l*Elec + l * epsFs * Math.pow(distance,2);
+        } else {
+            Etx = l*Elec + l * epsMp * Math.pow(distance,4);
+        }
+
+        double E = energy.get(energy.size() - 1);
+        //E -= Etx;
+        //test
+        E -= 0.01;
+        if (E < 0.0) {
+            energy.add(0.0);
+            isOn = false;
+        } else {
+            energy.add(E);
+        }
+    }
+
+    public void transmit(Node targetNode, GraphicsContext gc, int circleSize){
         gc.setStroke(Color.BLACK); // Set the color of the arrow to red (you can change it to any color you want)
         gc.setLineWidth(1.0); // Set the width of the arrow line
 
@@ -161,12 +181,77 @@ public class Node {
         gc.strokeLine(targetX, targetY, arrowX1, arrowY1);
         gc.strokeLine(targetX, targetY, arrowX2, arrowY2);
 
-        //handle energy dissipation
-        return false;
+        double distance = Math.sqrt(Math.pow(targetNode.x - this.x, 2) + Math.pow(targetNode.y - this.y, 2));
+        updateTxEnergy(distance);
+
     }
 
-    public void receive(Node node){
+    public void updateRxEnergy(double distance) {
+        double Elec = 50 * Math.pow(10, -9);
+        double l = 1.0;
+        double Erx = l * Elec;
 
+        double E = energy.get(energy.size() - 1);
+        //E -= Erx;
+        //Test
+        E -= 0.01;
+        if (E < 0.0) {
+            energy.add(0.0);
+            isOn = false;
+        } else {
+            energy.add(E);
+        }
+    }
+
+    public void receive(Node sourceNode, GraphicsContext gc, int circleSize){
+        gc.setStroke(Color.GREEN);
+        if (!isOn) {
+            gc.setStroke(Color.RED);
+        }
+        gc.setLineWidth(1.0); // Set the width of the arrow line
+
+        // Calculate the arrow starting point (center of the current node)
+        double startX = sourceNode.getX() + (circleSize / 2);
+        double startY = sourceNode.getY() + (circleSize / 2);
+
+        // Calculate the arrow ending point (center of the target node)
+        double targetX = x + (circleSize / 2);
+        double targetY = y + (circleSize / 2);
+
+        // Draw the arrow line
+        gc.strokeLine(startX, startY, targetX, targetY);
+
+        // Draw the arrowhead (you can customize the arrowhead appearance if needed)
+        double arrowLength = 10;
+        double arrowAngle = Math.toRadians(30);
+        double angle = Math.atan2(targetY - startY, targetX - startX);
+        double arrowX1 = targetX - arrowLength * Math.cos(angle + arrowAngle);
+        double arrowY1 = targetY - arrowLength * Math.sin(angle + arrowAngle);
+        double arrowX2 = targetX - arrowLength * Math.cos(angle - arrowAngle);
+        double arrowY2 = targetY - arrowLength * Math.sin(angle - arrowAngle);
+
+        gc.strokeLine(targetX, targetY, arrowX1, arrowY1);
+        gc.strokeLine(targetX, targetY, arrowX2, arrowY2);
+
+        double distance = Math.sqrt(Math.pow(sourceNode.x - this.x, 2) + Math.pow(sourceNode.y - this.y, 2));
+        updateRxEnergy(distance);
+
+    }
+
+    public void receiveCHMsg(Node CH) {
+        double distance = Math.sqrt(Math.pow(CH.getX() - this.x, 2) + Math.pow(CH.getY() - this.y, 2));
+        if (distanceToCH == 0) {
+            distanceToCH = distance;
+            this.CH = CH;
+            color = CH.color;
+        } else {
+            if (distanceToCH > distance) {
+                distanceToCH = distance;
+                this.CH = CH;
+                color = CH.color;
+            }
+        }
+        updateRxEnergy(distance);
     }
 
     public void listen(){
@@ -217,5 +302,35 @@ public class Node {
             }
         }
         return false;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void resetCH() {
+        CH = this;
+        distanceToCH = 0;
+        color = Color.DARKCYAN;
+    }
+
+    public void drawChLink(GraphicsContext gc, int circleSize) {
+        gc.setStroke(color); // Set the color of the arrow to red (you can change it to any color you want)
+        gc.setLineWidth(0.5); // Set the width of the arrow line
+
+        // Calculate the arrow starting point (center of the current node)
+        double startX = x + (circleSize / 2);
+        double startY = y + (circleSize / 2);
+
+        // Calculate the arrow ending point (center of the target node)
+        double targetX = CH.getX() + (circleSize / 2);
+        double targetY = CH.getY() + (circleSize / 2);
+
+        // Draw the arrow line
+        gc.strokeLine(startX, startY, targetX, targetY);
     }
 }

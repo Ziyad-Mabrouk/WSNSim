@@ -1,5 +1,7 @@
 package com.wsnsim.wsnsim;
 
+import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -53,5 +55,14 @@ public class RandomGenerator {
         double T = P /(1-P*(roundId%(1/P)));
 
         return (rnd < T);
+    }
+
+    public Color assignColor() {
+        Color standardColor = Color.DARKCYAN;
+        Color color;
+        do {
+            color = Color.rgb((int) (Math.random() * 256), (int) (Math.random() * 256), (int) (Math.random() * 256));
+        } while (color.equals(standardColor));
+        return color;
     }
 }
