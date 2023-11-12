@@ -1,12 +1,7 @@
 package com.wsnsim.wsnsim;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class Director {
     private static Director director;

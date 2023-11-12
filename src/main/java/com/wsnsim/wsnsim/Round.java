@@ -12,5 +12,8 @@ public class Round {
     public Round() {
     }
 
+    public void run() {
+        Director director = Director.getInstance();
 
+    }
 }

@@ -36,6 +36,8 @@ public class SimController implements Initializable {
     private Button next;
     @FXML
     private Button back;
+    @FXML
+    private Label nbre_CH;
     private Director director;
     @FXML
     public void quit() {
@@ -76,13 +78,17 @@ public class SimController implements Initializable {
     public void nextRound() {
         canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         director = Director.getInstance();
-        round_number.setText("Round " + director.getRound_number());
+
         director.nextRound(ch_density.getValue());
         director.setUp();
 
         canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         director.drawNodes();
         director.drawChLinks();
+
+        round_number.setText("Round: " + director.getRound_number());
+        nbre_CH.setText("Nbre de CH: " + director.getCurrentCHList(director.getRound_number()).size());
+
     }
 
     @FXML
@@ -125,6 +131,8 @@ public class SimController implements Initializable {
         canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         director.drawNodes();
         director.drawChLinks();
+
+        nbre_CH.setText("Nbre de CH: " + director.getCurrentCHList(director.getRound_number()).size());
     }
 
     @Override
@@ -134,6 +142,7 @@ public class SimController implements Initializable {
             df.setMaximumFractionDigits(1);
             density_percentage.setText(df.format(ch_density.getValue()) + "%");
         });
+
         canvas.setOnMouseMoved(mouseEvent -> {
             canvas.setCursor(Cursor.CROSSHAIR);
             for (Node node : director.getListNodes()) {
