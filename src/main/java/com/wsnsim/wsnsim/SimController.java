@@ -116,11 +116,8 @@ public class SimController implements Initializable {
         //communication_radius.setText("50");
         communication_radius.setDisable(false);
 
-        formule1.setSelected(true);
         formule1.setDisable(false);
-        formule2.setSelected(false);
         formule2.setDisable(false);
-        formule3.setSelected(false);
         formule3.setDisable(false);
 
         next.setDisable(true);
