@@ -147,9 +147,11 @@ public class Director {
 
             int i = 1;
             for (Node member : members) {
-                member.sense(round_number);
-                member.transmit(CH, "[timeslot " + i + "] msg", round_number);
-                CH.receive(member, "[timeslot " + i + "] msg", round_number);
+                if (member.isOn()) {
+                    member.sense(round_number);
+                    member.transmit(CH, "[timeslot " + i + "] msg", round_number);
+                    CH.receive(member, "[timeslot " + i + "] msg", round_number);
+                }
                 i++;
             }
 

@@ -149,7 +149,7 @@
       <Label fx:id="role" layoutX="633.0" layoutY="99.0" prefHeight="17.0" prefWidth="368.0" text="✓ Rôle: Cluster Head / Cluster Member/  sans rôle" />
       <Label fx:id="CH" layoutX="633.0" layoutY="123.0" prefHeight="17.0" prefWidth="368.0" text="✓ Cluster Head / Cluster Members: .... " />
       <Label fx:id="timeslot" layoutX="633.0" layoutY="148.0" prefHeight="17.0" prefWidth="368.0" text="✓ TimeSlot: .... " />
-      <BarChart fx:id="chart3" animated="false" layoutX="612.0" layoutY="176.0" prefHeight="184.0" prefWidth="397.0">
+      <BarChart fx:id="chart3" animated="false" layoutX="611.0" layoutY="166.0" legendSide="TOP" prefHeight="204.0" prefWidth="397.0" titleSide="BOTTOM">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -157,9 +157,9 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </BarChart>
-      <TextArea fx:id="logs" editable="false" layoutX="621.0" layoutY="385.0" prefHeight="240.0" prefWidth="389.0" />
-      <Label fx:id="logsLabel" layoutX="797.0" layoutY="362.0" text="Logs" />
-      <ScrollBar fx:id="scrollbar" layoutX="995.0" layoutY="385.0" orientation="VERTICAL" prefHeight="240.0" prefWidth="15.0" />
+      <TextArea fx:id="logs" editable="false" layoutX="621.0" layoutY="392.0" prefHeight="233.0" prefWidth="389.0" />
+      <Label fx:id="logsLabel" layoutX="805.0" layoutY="370.0" text="Logs" />
+      <ScrollBar fx:id="scrollbar" layoutX="995.0" layoutY="392.0" orientation="VERTICAL" prefHeight="233.0" prefWidth="15.0" />
       <Button fx:id="formules" layoutX="940.0" layoutY="38.0" mnemonicParsing="false" text="Formules" />
       <Button fx:id="general" layoutX="621.0" layoutY="38.0" mnemonicParsing="false" onAction="#general" text="Général" />
       <Label fx:id="etat" layoutX="633.0" layoutY="77.0" prefHeight="17.0" prefWidth="368.0" text="✓ État: Actif / Atteint" />
