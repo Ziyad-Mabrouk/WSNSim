@@ -1,7 +1,6 @@
 package com.wsnsim.wsnsim;
 
 import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -32,28 +31,22 @@ public class RandomGenerator {
         return coordinates;
     }
 
-    //test function
-    public boolean chSelection() {
-        Random random = new Random();
-        return random.nextBoolean();
-    }
-
-    public boolean chSelection(Node node, int roundId, double P) {
-        if (node.wasCH()) {
+    public boolean chSelection(Node node, int roundId, double P, int formule, double E_max) {
+        if (!node.isOn() || node.wasCH()) {
             return false;
         }
+
         Random random = new Random();
         double rnd = random.nextDouble();
         double T = P /(1-P*(roundId%(1/P)));
-
-        return (rnd < T);
-    }
-
-    public boolean chSelection(int roundId, double P) {
-        Random random = new Random();
-        double rnd = random.nextDouble();
-        double T = P /(1-P*(roundId%(1/P)));
-
+        switch (formule) {
+            case 2:
+                T *= (node.getEnergy().get(node.getEnergy().size() - 1).getValue() / E_max);
+                break;
+            case 3:
+                T *= ( node.getEnergy().get(node.getEnergy().size() - 1).getValue() / E_max) + ( (node.calculateRs() / (1/P)) * (1 - (node.getEnergy().get(node.getEnergy().size() - 1).getValue() / E_max) ) );
+                break;
+        }
         return (rnd < T);
     }
 
@@ -65,4 +58,6 @@ public class RandomGenerator {
         } while (color.equals(standardColor));
         return color;
     }
+
+
 }

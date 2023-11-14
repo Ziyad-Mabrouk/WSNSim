@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.SubScene?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="636.0" maxWidth="1020.0" minHeight="636.0" minWidth="1020.0" prefHeight="636.0" prefWidth="1020.0" scaleShape="false" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wsnsim.wsnsim.SimController">
+   <children>
+      <Label id="nodes_number_label" layoutX="14.0" layoutY="11.0" text="Nombre de noeuds:" />
+      <Slider id="ch_density" fx:id="ch_density" layoutX="168.0" layoutY="44.0" majorTickUnit="10.0" minorTickCount="0" prefHeight="37.0" prefWidth="397.0" showTickLabels="true" showTickMarks="true" />
+      <Label id="ch_density_label" layoutX="14.0" layoutY="46.0" text="Densité des cluster heads:" />
+      <TextField id="nodes_number" fx:id="nodes_number" layoutX="132.0" layoutY="7.0" prefHeight="25.0" prefWidth="119.0" />
+      <Label id="round_duration_label" layoutX="349.0" layoutY="11.0" text="Durée de tour (round):" />
+      <TextField id="round_duration" fx:id="round_duration" layoutX="479.0" layoutY="7.0" prefHeight="25.0" prefWidth="119.0" promptText="en secondes" />
+      <Button id="next" fx:id="next" disable="true" layoutX="442.0" layoutY="604.0" mnemonicParsing="false" onAction="#nextRound" prefHeight="25.0" prefWidth="158.0" text="Round Suivant" />
+      <Button id="simuler" fx:id="simuler" layoutX="14.0" layoutY="259.0" mnemonicParsing="false" onAction="#start" text="Simuler" />
+      <Label id="round_number" fx:id="round_number" layoutX="212.0" layoutY="608.0" prefHeight="17.0" prefWidth="98.0" text="Round: 0" />
+      <Button id="pause" fx:id="infos" disable="true" layoutX="93.0" layoutY="259.0" mnemonicParsing="false" onAction="#showInfos" text="Infos" />
+      <Button id="reset" layoutX="441.0" layoutY="259.0" mnemonicParsing="false" onAction="#reset" text="Réinitialiser" />
+      <Button id="quit" layoutX="541.0" layoutY="259.0" mnemonicParsing="false" onAction="#quit" text="Quitter" />
+      <Label id="density_percentage" fx:id="density_percentage" layoutX="573.0" layoutY="44.0" prefHeight="17.0" prefWidth="35.0" text="0%" />
+      <Label fx:id="nbre_CH" layoutX="329.0" layoutY="608.0" text="Nbre de CH: 0" />
+      <Separator layoutX="-1.0" layoutY="250.0" prefHeight="3.0" prefWidth="609.0" />
+      <Canvas id="canvas" fx:id="canvas" blendMode="DARKEN" height="307.0" layoutX="9.0" layoutY="290.0" width="589.0">
+         <cursor>
+            <Cursor fx:constant="CROSSHAIR" />
+         </cursor>
+      </Canvas>
+      <Label layoutX="14.0" layoutY="93.0" text="Formule de Clustering: " />
+      <Separator layoutX="606.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="636.0" prefWidth="9.0" />
+      <LineChart fx:id="chart1" layoutX="606.0" layoutY="69.0" legendVisible="false" prefHeight="260.0" prefWidth="412.0">
+        <xAxis>
+          <CategoryAxis disable="true" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </LineChart>
+      <Label layoutX="744.0" layoutY="40.0" text="Variation d'Energie Totale" />
+      <BarChart fx:id="chart2" layoutX="607.0" layoutY="364.0" legendVisible="false" prefHeight="260.0" prefWidth="405.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
+      <Separator layoutX="610.0" layoutY="324.0" prefHeight="3.0" prefWidth="405.0" />
+      <Label layoutX="744.0" layoutY="345.0" text="Durée de vie des noeuds" />
+      <Label layoutX="685.0" layoutY="7.0" text="(Sélectionner un noeud pour afficher ses détails)" textFill="#b1b1b1" />
+      <SubScene height="618.0" layoutX="608.0" layoutY="32.0" visible="false" width="562.0">
+        <root>
+          <Region />
+        </root>
+      </SubScene>
+      <Label layoutX="349.0" layoutY="94.0" text="Energie Initiale:" />
+      <TextField fx:id="initial_energy" layoutX="446.0" layoutY="90.0" prefHeight="25.0" prefWidth="150.0" promptText="en joules" text="0.5" />
+      <Label id="warning" fx:id="warning" layoutX="260.0" layoutY="12.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="17.0" prefWidth="56.0" text="*max=100" textFill="#f40000" visible="false" />
+      <RadioButton fx:id="formule1" layoutX="19.0" layoutY="128.0" mnemonicParsing="false" selected="true" text="Formule 1:" />
+      <RadioButton fx:id="formule2" layoutX="19.0" layoutY="176.0" mnemonicParsing="false" text="Formule 2:" />
+      <RadioButton fx:id="formule3" layoutX="19.0" layoutY="218.0" mnemonicParsing="false" text="Formule 3:" />
+      <ImageView fitHeight="44.0" fitWidth="167.0" layoutX="103.0" layoutY="118.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@formule1.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="37.0" fitWidth="200.0" layoutX="104.0" layoutY="166.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@formule2.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="37.0" fitWidth="200.0" layoutX="103.0" layoutY="211.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@formule3.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="349.0" layoutY="127.0" text="Rayon de communication:" />
+      <TextField fx:id="communication_radius" layoutX="497.0" layoutY="123.0" prefHeight="25.0" prefWidth="98.0" promptText="en pixels" text="50" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b3daff" height="81.0" layoutX="356.0" layoutY="165.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="249.0" />
+      <Label layoutX="458.0" layoutY="169.0" text="Légende" textFill="#000000b9" underline="true">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="17.0" layoutX="373.0" layoutY="192.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="17.0" />
+      <Circle fill="DODGERBLUE" layoutX="510.0" layoutY="201.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+      <Label layoutX="402.0" layoutY="193.0" text="Cluster Head" textFill="#000000b9">
+         <font>
+            <Font name="System Italic" size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="533.0" layoutY="193.0" text="Noeud Actif" textFill="#000000b9">
+         <font>
+            <Font name="System Italic" size="10.0" />
+         </font>
+      </Label>
+      <Separator layoutX="348.0" layoutY="160.0" orientation="VERTICAL" prefHeight="90.0" prefWidth="9.0" />
+      <Separator layoutX="351.0" layoutY="160.0" prefHeight="3.0" prefWidth="255.0" />
+      <Circle fill="#a8a8a8" layoutX="381.0" layoutY="230.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+      <Label layoutX="402.0" layoutY="223.0" text="Noeud Etteint" textFill="#000000b9">
+         <font>
+            <Font name="System Italic" size="10.0" />
+         </font>
+      </Label>
+      <Line endX="-55.333343505859375" layoutX="576.0" layoutY="233.0" startX="-80.33331298828125" startY="1.52587890625E-5" stroke="DODGERBLUE" />
+      <Label layoutX="530.0" layoutY="225.0" text="Communication" textFill="#000000b9">
+         <font>
+            <Font name="System Italic" size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="369.0" layoutY="109.0" text="(en joules)">
+         <font>
+            <Font name="System Italic" size="9.0" />
+         </font>
+      </Label>
+      <Label layoutX="397.0" layoutY="139.0" text="(en pixels)">
+         <font>
+            <Font name="System Italic" size="9.0" />
+         </font>
+      </Label>
+      <Button id="next" fx:id="back" disable="true" layoutX="12.0" layoutY="604.0" mnemonicParsing="false" onAction="#previousRound" prefHeight="25.0" prefWidth="158.0" text="Round Précédent" />
+      <SubScene fx:id="subScene" height="608.0" layoutX="610.0" layoutY="28.0" width="410.0">
+        <root>
+          <Region />
+        </root>
+      </SubScene>
+      <Label fx:id="nodeTitle" layoutX="813.0" layoutY="41.0" prefHeight="17.0" prefWidth="69.0" text="Noeud ?" />
+      <Canvas fx:id="nodeCanvas" height="30.0" layoutX="764.0" layoutY="35.0" width="30.0" />
+      <Label fx:id="role" layoutX="633.0" layoutY="99.0" prefHeight="17.0" prefWidth="368.0" text="✓ Rôle: Cluster Head / Cluster Member/  sans rôle" />
+      <Label fx:id="CH" layoutX="633.0" layoutY="123.0" prefHeight="17.0" prefWidth="368.0" text="✓ Cluster Head / Cluster Members: .... " />
+      <Label fx:id="timeslot" layoutX="633.0" layoutY="148.0" prefHeight="17.0" prefWidth="368.0" text="✓ TimeSlot: .... " />
+      <BarChart fx:id="chart3" animated="false" layoutX="612.0" layoutY="176.0" prefHeight="184.0" prefWidth="397.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
+      <TextArea fx:id="logs" editable="false" layoutX="621.0" layoutY="385.0" prefHeight="240.0" prefWidth="389.0" />
+      <Label fx:id="logsLabel" layoutX="797.0" layoutY="362.0" text="Logs" />
+      <ScrollBar fx:id="scrollbar" layoutX="995.0" layoutY="385.0" orientation="VERTICAL" prefHeight="240.0" prefWidth="15.0" />
+      <Button fx:id="formules" layoutX="940.0" layoutY="38.0" mnemonicParsing="false" text="Formules" />
+      <Button fx:id="general" layoutX="621.0" layoutY="38.0" mnemonicParsing="false" onAction="#general" text="Général" />
+      <Label fx:id="etat" layoutX="633.0" layoutY="77.0" prefHeight="17.0" prefWidth="368.0" text="✓ État: Actif / Atteint" />
+      <ImageView fx:id="hoverImage" fitHeight="573.0" fitWidth="389.0" layoutX="621.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@Picture1.png" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>
