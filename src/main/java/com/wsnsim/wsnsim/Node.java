@@ -35,16 +35,23 @@ public class Node implements Cloneable {
         this.id = originalNode.id;
         this.x = originalNode.x;
         this.y = originalNode.y;
-        this.energy = new ArrayList<>(originalNode.energy);
-        this.isCH = new ArrayList<>(originalNode.isCH);
         this.radius = originalNode.radius;
+        this.isCH = new ArrayList<>(originalNode.isCH);
         this.isOn = originalNode.isOn;
+
+        // Make sure the energy list is properly initialized
+        this.energy = new ArrayList<>(originalNode.energy.size());
+        for (Pair<Integer, Double> pair : originalNode.energy) {
+            this.energy.add(new Pair<>(pair.getKey(), pair.getValue()));
+        }
+
         this.CH = originalNode.CH;
         this.color = originalNode.color;
         this.distanceToCH = originalNode.distanceToCH;
         this.log = originalNode.log;
     }
-    
+
+
     public Node() {
         
     }
