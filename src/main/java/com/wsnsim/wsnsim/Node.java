@@ -9,7 +9,7 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Node {
+public class Node implements Cloneable {
     private int id, x, y, radius;
     private ArrayList<Pair<Integer, Double>> energy;
     private boolean isOn;
@@ -30,37 +30,27 @@ public class Node {
         color = Color.DARKCYAN;
         distanceToCH = 0;
     }
+
+    public Node(Node originalNode) {
+        this.id = originalNode.id;
+        this.x = originalNode.x;
+        this.y = originalNode.y;
+        this.energy = new ArrayList<>(originalNode.energy);
+        this.isCH = new ArrayList<>(originalNode.isCH);
+        this.radius = originalNode.radius;
+        this.isOn = originalNode.isOn;
+        this.CH = originalNode.CH;
+        this.color = originalNode.color;
+        this.distanceToCH = originalNode.distanceToCH;
+        this.log = originalNode.log;
+    }
     
     public Node() {
         
     }
 
-    public void copyFrom(Node node) {
-        this.setId(node.getId());
-        this.setX(node.getX());
-        this.setY(node.getY());
-        this.setEnergy(new ArrayList<>(node.getEnergy())); // Copy the energy list
-        this.setOn(node.isOn());
-        this.setCH(node.getCH());
-        this.setIsCH(new ArrayList<>(node.getIsCH())); // Copy the isCH list
-        this.setColor(node.getColor());
-        this.setDistanceToCH(node.getDistanceToCH());
-    }
-
     public Node copyTo() {
-        Node newNode = new Node();
-
-        newNode.setId(this.getId());
-        newNode.setX(this.getX());
-        newNode.setY(this.getY());
-        newNode.setEnergy(new ArrayList<>(this.getEnergy())); // Copy the energy list
-        newNode.setOn(this.isOn());
-        newNode.setCH(this.getCH());
-        newNode.setIsCH(new ArrayList<>(this.getIsCH())); // Copy the isCH list
-        newNode.setColor(this.getColor());
-        newNode.setDistanceToCH(this.getDistanceToCH());
-
-        return newNode;
+        return new Node(this);
     }
 
     private void setDistanceToCH(double distanceToCH) {
@@ -161,7 +151,8 @@ public class Node {
 
         } else {
             gc.setFill(color);
-            if (isCH.get(round_number).equals(true)) {
+            int validRound = Math.min(round_number, isCH.size() - 1);
+            if (isCH.get(validRound)) {
                 gc.fillRect(x, y, circleSize, circleSize);
             } else {
                 gc.fillOval(x, y, circleSize, circleSize);
@@ -396,16 +387,20 @@ public class Node {
 
     public ArrayList<Double> getLastEnergyPerRound() {
         ArrayList<Double> E = new ArrayList<>();
-        double roundEnergy = energy.get(0).getValue();
-        E.add(roundEnergy); //first value is for initial energy OR "round 0"
-        int round = 0;
-        for (Pair<Integer, Double> enrgyPair : energy) {
-            if(enrgyPair.getKey() != round) {
-                E.add(roundEnergy);
-                round ++;
+
+        // Add the initial energy for round 0
+        E.add(energy.get(0).getValue());
+
+        for (int i = 1; i < energy.size(); i++) {
+            // If the round number changes, add the energy value for the new round
+            if (energy.get(i - 1).getKey() != energy.get(i).getKey()) {
+                E.add(energy.get(i - 1).getValue());
             }
-            roundEnergy = enrgyPair.getValue();
         }
+
+        // Add the last recorded energy value for the last round
+        E.add(energy.get(energy.size() - 1).getValue());
+
         return E;
     }
 

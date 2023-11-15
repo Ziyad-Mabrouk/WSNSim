@@ -147,15 +147,20 @@ public class SimController implements Initializable {
         canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         director = Director.getInstance();
 
-        director.nextRound();
+        try {
+            director.restore(director.getRound_number() + 1);
+        } catch (Exception e) {
+            // don't have that yet:
+            director.nextRound();
+            director.setUp();
+            director.stableTransmission();
+
+        }
         round_number.setText("Round: " + (director.getRound_number() + 1));
         nbre_CH.setText("Nbre de CH: " + director.getCurrentCHList().size());
-        director.setUp();
 
         director.drawNodes();
         director.drawChLinks();
-
-        director.stableTransmission();
 
         back.setDisable(false);
 
@@ -181,6 +186,13 @@ public class SimController implements Initializable {
 
         if (director.getRound_number() == 0) {
             back.setDisable(true);
+        }
+
+        if(selectedNode == null) {
+            showInfos();
+        } else {
+            setDetailsVisible();
+            getNodeInfos(selectedNode);
         }
     }
 
@@ -432,7 +444,7 @@ public class SimController implements Initializable {
             df.setMaximumFractionDigits(5);
             etat.setText("✓ État: Actif (E = " + df.format(node.getEnergy().get(node.getEnergy().size() - 1).getValue()) + " Joules )");
 
-            if(node.getIsCH().get(director.getRound_number())) {
+            if(node.getIsCH().get(Math.min(director.getRound_number(), node.getIsCH().size() - 1))) {
                 role.setText("✓ Rôle: Cluster Head");
                 String text = "✓ Membres: ";
                 if (node.getCM().size() == 0) {

@@ -158,7 +158,6 @@ public class Director {
             CH.transmitToSink(round_number);
         }
         deadNodesPerRound.add(numOfDeadNodes());
-        save();
 
         for (Node node : listNodes) {
             ArrayList<Pair<Integer, Double>> energy = node.getEnergy();
@@ -170,30 +169,28 @@ public class Director {
             }
         }
 
+        save();
     }
 
     public void nextRound() {
-        try {
-            restore(round_number + 1);
-        } catch (Exception e) {
-            round_number++;
-            resetNodes();
-            for (Node node : listNodes) {
-                if(node.isOn()) {
-                    node.setLog(node.getLog() + "Round: " + (round_number + 1) + ".\n");
-                    ArrayList<Boolean> isCH = node.getIsCH();
-                    isCH.add(randomGenerator.chSelection(node, round_number, chDensity * 0.01, formule, E_max));
-                    node.setIsCH(isCH);
-                    if (isCH.get(round_number)) {
-                        node.setColor(randomGenerator.assignColor());
-                    }
-                } else {
-                    //
+        round_number++;
+        resetNodes();
+        for (Node node : listNodes) {
+            if(node.isOn()) {
+                node.setLog(node.getLog() + "Round: " + (round_number + 1) + ".\n");
+                ArrayList<Boolean> isCH = node.getIsCH();
+                isCH.add(randomGenerator.chSelection(node, round_number, chDensity * 0.01, formule, E_max));
+                node.setIsCH(isCH);
+                if (isCH.get(round_number)) {
+                    node.setColor(randomGenerator.assignColor());
                 }
-
+            } else {
+                //
             }
+
         }
     }
+
 
     public void clear() {
         round_number = 0;
@@ -212,20 +209,24 @@ public class Director {
     }
 
     public ArrayList<Double> getTotalEnergyPerRound() {
-        ArrayList<Double> energy = new ArrayList<>();
-        for (int i = 0 ; i < round_number + 1 ; i ++) {
-            energy.add(0.0);
+        ArrayList<Double> totalEnergy = new ArrayList<>();
+        int numRounds = round_number + 1;
+
+        for (int i = 0; i < numRounds; i++) {
+            totalEnergy.add(0.0);
         }
+
         for (Node node : listNodes) {
-            int i = 0;
-            for (Double E : node.getLastEnergyPerRound()) {
-                energy.set(i, energy.get(i) + E);
-                i++;
+            ArrayList<Double> nodeEnergyPerRound = node.getLastEnergyPerRound();
+
+            for (int i = 0; i < numRounds && i < nodeEnergyPerRound.size(); i++) {
+                totalEnergy.set(i, totalEnergy.get(i) + nodeEnergyPerRound.get(i));
             }
         }
 
-        return energy;
+        return totalEnergy;
     }
+
 
     public int numOfDeadNodes() {
         int numOfDeadNodes = 0;
@@ -249,31 +250,12 @@ public class Director {
     public void restore(int index) {
         DirectorHistory directorHistory = DirectorHistory.getInstance();
         DirectorMemento directorMemento = directorHistory.pop(index);
-        this.listNodes = directorMemento.getListNodes();
-        this.deadNodesPerRound = directorMemento.getDeadNodesPerRound();
-        this.round_number = directorMemento.getRound_number();
-    }
-
-    public DirectorMemento copyTo() {
-        ArrayList<Node> newListNodes = new ArrayList<>();
-        for (Node node : this.listNodes) {
-            newListNodes.add(node.copyTo());
-        }
-
-        ArrayList<Integer> newDeadNodesPerRound = new ArrayList<>(this.deadNodesPerRound);
-
-        return new DirectorMemento(newListNodes, this.round_number, newDeadNodesPerRound);
-    }
-
-    public void copyFrom(DirectorMemento directorMemento) {
-        this.round_number = directorMemento.getRound_number();
-
         this.listNodes.clear();
         for (Node node : directorMemento.getListNodes()) {
             this.listNodes.add(node.copyTo());
         }
-
         this.deadNodesPerRound = new ArrayList<>(directorMemento.getDeadNodesPerRound());
+        this.round_number = directorMemento.getRound_number();
     }
 
 }
