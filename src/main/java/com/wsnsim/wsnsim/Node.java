@@ -51,6 +51,14 @@ public class Node implements Cloneable {
         this.log = originalNode.log;
     }
 
+    @Override
+    public Node clone() {
+        try {
+            return (Node) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+    }
 
     public Node() {
         

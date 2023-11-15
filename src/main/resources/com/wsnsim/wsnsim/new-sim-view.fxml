@@ -10,7 +10,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
@@ -146,10 +145,10 @@
       </SubScene>
       <Label fx:id="nodeTitle" layoutX="813.0" layoutY="41.0" prefHeight="17.0" prefWidth="69.0" text="Noeud ?" />
       <Canvas fx:id="nodeCanvas" height="30.0" layoutX="764.0" layoutY="35.0" width="30.0" />
-      <Label fx:id="role" layoutX="633.0" layoutY="99.0" prefHeight="17.0" prefWidth="368.0" text="✓ Rôle: Cluster Head / Cluster Member/  sans rôle" />
-      <Label fx:id="CH" layoutX="633.0" layoutY="123.0" prefHeight="17.0" prefWidth="368.0" text="✓ Cluster Head / Cluster Members: .... " />
-      <Label fx:id="timeslot" layoutX="633.0" layoutY="148.0" prefHeight="17.0" prefWidth="368.0" text="✓ TimeSlot: .... " />
-      <BarChart fx:id="chart3" animated="false" layoutX="611.0" layoutY="166.0" legendSide="TOP" prefHeight="204.0" prefWidth="397.0" titleSide="BOTTOM">
+      <Label fx:id="role" layoutX="633.0" layoutY="96.0" prefHeight="17.0" prefWidth="368.0" text="✓ Rôle: Cluster Head / Cluster Member/  sans rôle" />
+      <Label fx:id="CH" layoutX="633.0" layoutY="120.0" prefHeight="17.0" prefWidth="368.0" text="✓ Cluster Head / Cluster Members: .... " />
+      <Label fx:id="timeslot" layoutX="633.0" layoutY="143.0" prefHeight="17.0" prefWidth="368.0" text="✓ TimeSlot: .... " />
+      <BarChart fx:id="chart3" animated="false" layoutX="611.0" layoutY="163.0" legendSide="TOP" prefHeight="204.0" prefWidth="397.0" titleSide="BOTTOM">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -157,69 +156,68 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </BarChart>
-      <TextArea fx:id="logs" editable="false" layoutX="621.0" layoutY="392.0" prefHeight="233.0" prefWidth="389.0" />
-      <Label fx:id="logsLabel" layoutX="805.0" layoutY="370.0" text="Logs" />
-      <ScrollBar fx:id="scrollbar" layoutX="995.0" layoutY="392.0" orientation="VERTICAL" prefHeight="233.0" prefWidth="15.0" />
+      <Label fx:id="logsLabel" layoutX="805.0" layoutY="365.0" text="Logs" />
+      <TextArea fx:id="logs" layoutX="616.0" layoutY="384.0" prefHeight="247.0" prefWidth="397.0" />
       <Button fx:id="formules" layoutX="940.0" layoutY="38.0" mnemonicParsing="false" text="Formules" />
       <Button fx:id="general" layoutX="621.0" layoutY="38.0" mnemonicParsing="false" onAction="#general" text="Général" />
-      <Label fx:id="etat" layoutX="633.0" layoutY="77.0" prefHeight="17.0" prefWidth="368.0" text="✓ État: Actif / Atteint" />
+      <Label fx:id="etat" layoutX="633.0" layoutY="74.0" prefHeight="17.0" prefWidth="368.0" text="✓ État: Actif / Atteint" />
       <ImageView fx:id="hoverImage" fitHeight="573.0" fitWidth="389.0" layoutX="621.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@Picture1.png" />
          </image>
       </ImageView>
-      <Rectangle fx:id="auSubScene" arcHeight="4.0" arcWidth="5.0" fill="#d9edff" height="289.0" layoutX="792.0" layoutY="21.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="false" width="217.0" />
+      <Rectangle fx:id="auSubScene" arcHeight="4.0" arcWidth="5.0" fill="#d9edff" height="270.0" layoutX="792.0" layoutY="21.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="false" width="217.0" />
       <Label fx:id="aboutUs" layoutX="998.0" layoutY="2.0" text="?" textFill="#109ece" underline="true">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="au1" layoutX="801.0" layoutY="26.0" prefHeight="60.0" prefWidth="200.0" text="Projet de simulation de réseau de capteurs sans fil (implémentation du protocole LEACH pour la partie clustering)" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+      <Label fx:id="au1" layoutX="801.0" layoutY="26.0" prefHeight="53.0" prefWidth="200.0" text="Projet de simulation de réseau de capteurs sans fil (implémentation du protocole LEACH pour la partie clustering)" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <Label fx:id="au3" layoutX="805.0" layoutY="125.0" prefHeight="25.0" prefWidth="192.0" text="✓Encadré par Pr. Bah Slimane" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+      <Label fx:id="au3" layoutX="805.0" layoutY="115.0" prefHeight="25.0" prefWidth="192.0" text="✓Encadré par Pr. Bah Slimane" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <Label fx:id="au2" layoutX="840.0" layoutY="91.0" prefHeight="25.0" prefWidth="123.0" text="INE2 SUD - Cloud &amp; IoT" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+      <Label fx:id="au2" layoutX="840.0" layoutY="86.0" prefHeight="25.0" prefWidth="123.0" text="INE2 SUD - Cloud &amp; IoT" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <Label fx:id="au4" layoutX="805.0" layoutY="150.0" prefHeight="25.0" prefWidth="192.0" text="✓Groupe:" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+      <Label fx:id="au4" layoutX="805.0" layoutY="140.0" prefHeight="25.0" prefWidth="192.0" text="✓Groupe:" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <Label fx:id="au5" layoutX="809.0" layoutY="174.0" prefHeight="25.0" prefWidth="192.0" text="Mabrouk Ziyad" textFill="#969494" visible="false" wrapText="true">
+      <Label fx:id="au5" layoutX="825.0" layoutY="159.0" prefHeight="25.0" prefWidth="167.0" text="Mabrouk Ziyad" textFill="#969494" visible="false" wrapText="true">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <Label fx:id="au6" layoutX="809.0" layoutY="195.0" prefHeight="25.0" prefWidth="192.0" text="Lansari Ibrahim" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+      <Label fx:id="au6" layoutX="825.0" layoutY="180.0" prefHeight="25.0" prefWidth="167.0" text="Lansari Ibrahim" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <Label fx:id="au7" layoutX="808.0" layoutY="217.0" prefHeight="25.0" prefWidth="192.0" text="Quehlaoui Mohamed" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+      <Label fx:id="au7" layoutX="824.0" layoutY="202.0" prefHeight="25.0" prefWidth="167.0" text="Quehlaoui Mohamed" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <Label fx:id="au8" layoutX="809.0" layoutY="239.0" prefHeight="25.0" prefWidth="192.0" text="Lahlou Mimi Mehdi" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+      <Label fx:id="au8" layoutX="825.0" layoutY="224.0" prefHeight="25.0" prefWidth="167.0" text="Lahlou Mimi Mehdi" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <Label fx:id="au9" layoutX="809.0" layoutY="261.0" prefHeight="25.0" prefWidth="192.0" text="Abous Mohamed" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+      <Label fx:id="au9" layoutX="825.0" layoutY="246.0" prefHeight="25.0" prefWidth="167.0" text="Abous Mohamed" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <Label fx:id="au10" layoutX="960.0" layoutY="293.0" prefHeight="15.0" prefWidth="43.0" text="2023-2024" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+      <Label fx:id="au10" layoutX="960.0" layoutY="270.0" prefHeight="15.0" prefWidth="43.0" text="2023-2024" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
          <font>
             <Font name="System Italic" size="9.0" />
          </font>

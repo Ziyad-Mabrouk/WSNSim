@@ -251,17 +251,15 @@ public class Director {
         DirectorHistory directorHistory = DirectorHistory.getInstance();
         DirectorMemento directorMemento = directorHistory.pop(index);
 
-        // Update the current round number and clear dead nodes per round list
-        this.round_number = directorMemento.getRound_number();
-        this.deadNodesPerRound.clear();
-
-        // Clear the current list of nodes and add the nodes from the saved state
+        // Deep copy the list of nodes
         this.listNodes.clear();
         for (Node node : directorMemento.getListNodes()) {
-            this.listNodes.add(node.copyTo());
+            this.listNodes.add(node.clone());
         }
 
+        // Copy other primitive types
         this.deadNodesPerRound = new ArrayList<>(directorMemento.getDeadNodesPerRound());
+        this.round_number = directorMemento.getRound_number();
     }
 
 }

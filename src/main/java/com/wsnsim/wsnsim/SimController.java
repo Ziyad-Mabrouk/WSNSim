@@ -1,6 +1,8 @@
 package com.wsnsim.wsnsim;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
@@ -83,8 +85,6 @@ public class SimController implements Initializable {
     private BarChart<?, ?> chart3;
     @FXML
     private TextArea logs;
-    @FXML
-    private ScrollBar scrollbar;
     @FXML
     private Label etat;
     @FXML
@@ -335,8 +335,6 @@ public class SimController implements Initializable {
             showNodeDetails(mouseEvent);
         });
 
-        scrollbar.valueProperty().bindBidirectional(logs.scrollTopProperty());
-
         // Set up the mouse hover events for "formules"
         formules.setOnMouseEntered(event -> showHoverImage());
         formules.setOnMouseExited(event -> hideHoverImage());
@@ -481,7 +479,6 @@ public class SimController implements Initializable {
         timeslot.setVisible(false);
         chart3.setVisible(false);
         logs.setVisible(false);
-        scrollbar.setVisible(false);
         etat.setVisible(false);
         logsLabel.setVisible(false);
         formules.setDisable(true);
@@ -500,7 +497,6 @@ public class SimController implements Initializable {
         timeslot.setVisible(true);
         chart3.setVisible(true);
         logs.setVisible(true);
-        scrollbar.setVisible(true);
         etat.setVisible(true);
         logsLabel.setVisible(true);
         formules.setDisable(false);
