@@ -17,6 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.shape.Rectangle;
+
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Collections;
@@ -89,6 +91,30 @@ public class SimController implements Initializable {
     private Label logsLabel;
     @FXML
     private ImageView hoverImage;
+    @FXML
+    private Label aboutUs;
+    @FXML
+    private Label au1;
+    @FXML
+    private Label au2;
+    @FXML
+    private Label au3;
+    @FXML
+    private Label au4;
+    @FXML
+    private Label au5;
+    @FXML
+    private Label au6;
+    @FXML
+    private Label au7;
+    @FXML
+    private Label au8;
+    @FXML
+    private Label au9;
+    @FXML
+    private Label au10;
+    @FXML
+    private Rectangle auSubScene;
     private Director director;
     private int numNodes, roundDuration, commRadius, formule = 1;
     private double E_max;
@@ -127,6 +153,7 @@ public class SimController implements Initializable {
         warning.setVisible(false);
 
         round_number.setText("Round: 0");
+        nbre_CH.setText("Nbre de CH: 0");
         director.clear();
         DirectorHistory directorHistory = DirectorHistory.getInstance();
         directorHistory.clearHistory();
@@ -280,6 +307,7 @@ public class SimController implements Initializable {
             formule = 1;
         }
         if (formule2.isSelected()) {
+            formule = 2;
         }
         if (formule3.isSelected()) {
             formule = 3;
@@ -309,9 +337,54 @@ public class SimController implements Initializable {
 
         scrollbar.valueProperty().bindBidirectional(logs.scrollTopProperty());
 
-        // Set up the mouse hover events
+        // Set up the mouse hover events for "formules"
         formules.setOnMouseEntered(event -> showHoverImage());
         formules.setOnMouseExited(event -> hideHoverImage());
+
+
+        // About Us section
+
+        aboutUs.setStyle("-fx-text-fill: blue;");
+        aboutUs.setCursor(Cursor.DEFAULT);
+        aboutUs.setOnMouseEntered(event -> {
+            // Change the text color to purple
+            aboutUs.setStyle("-fx-text-fill: purple;");
+
+            // Change cursor to HAND
+            aboutUs.setCursor(Cursor.HAND);
+
+            // Show the elements
+            auSubScene.setVisible(true);
+            au1.setVisible(true);
+            au2.setVisible(true);
+            au3.setVisible(true);
+            au4.setVisible(true);
+            au5.setVisible(true);
+            au6.setVisible(true);
+            au7.setVisible(true);
+            au8.setVisible(true);
+            au9.setVisible(true);
+            au10.setVisible(true);
+        });
+
+        aboutUs.setOnMouseExited(event -> {
+            aboutUs.setStyle("-fx-text-fill: blue;");
+            aboutUs.setCursor(Cursor.DEFAULT);
+
+            // Hide the elements
+            auSubScene.setVisible(false);
+            au1.setVisible(false);
+            au2.setVisible(false);
+            au3.setVisible(false);
+            au4.setVisible(false);
+            au5.setVisible(false);
+            au6.setVisible(false);
+            au7.setVisible(false);
+            au8.setVisible(false);
+            au9.setVisible(false);
+            au10.setVisible(false);
+        });
+
     }
 
 
@@ -441,7 +514,7 @@ public class SimController implements Initializable {
 
         if(node.isOn()) {
             DecimalFormat df = new DecimalFormat();
-            df.setMaximumFractionDigits(5);
+            df.setMaximumFractionDigits(6);
             etat.setText("✓ État: Actif (E = " + df.format(node.getEnergy().get(node.getEnergy().size() - 1).getValue()) + " Joules )");
 
             if(node.getIsCH().get(Math.min(director.getRound_number(), node.getIsCH().size() - 1))) {
@@ -454,9 +527,9 @@ public class SimController implements Initializable {
                     for (Node member : node.getCM()) {
                         text += "noeud " + member.getId() + "; ";
                     }
-                    df = new DecimalFormat();
-                    df.setMaximumFractionDigits(1);
-                    timeslot.setText("✓ Durée timeslot: " + df.format((double) (roundDuration / node.getCM().size())) + " secondes");
+                    df.setMaximumFractionDigits(3);
+                    double timeslotDuration = (double) roundDuration / node.getCM().size();
+                    timeslot.setText("✓ Durée timeslot: " + df.format(timeslotDuration) + " secondes");
                 }
                 CH.setText(text);
             } else if (node.getCH().equals(node)) {

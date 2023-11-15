@@ -66,7 +66,7 @@
         </yAxis>
       </BarChart>
       <Separator layoutX="610.0" layoutY="324.0" prefHeight="3.0" prefWidth="405.0" />
-      <Label layoutX="744.0" layoutY="345.0" text="Durée de vie des noeuds" />
+      <Label layoutX="744.0" layoutY="345.0" text="Nombre de noeuds actifs par Round" />
       <Label layoutX="685.0" layoutY="7.0" text="(Sélectionner un noeud pour afficher ses détails)" textFill="#b1b1b1" />
       <SubScene height="618.0" layoutX="608.0" layoutY="32.0" visible="false" width="562.0">
         <root>
@@ -168,5 +168,61 @@
             <Image url="@Picture1.png" />
          </image>
       </ImageView>
+      <Rectangle fx:id="auSubScene" arcHeight="4.0" arcWidth="5.0" fill="#d9edff" height="289.0" layoutX="792.0" layoutY="21.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="false" width="217.0" />
+      <Label fx:id="aboutUs" layoutX="998.0" layoutY="2.0" text="?" textFill="#109ece" underline="true">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="au1" layoutX="801.0" layoutY="26.0" prefHeight="60.0" prefWidth="200.0" text="Projet de simulation de réseau de capteurs sans fil (implémentation du protocole LEACH pour la partie clustering)" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+      <Label fx:id="au3" layoutX="805.0" layoutY="125.0" prefHeight="25.0" prefWidth="192.0" text="✓Encadré par Pr. Bah Slimane" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+      <Label fx:id="au2" layoutX="840.0" layoutY="91.0" prefHeight="25.0" prefWidth="123.0" text="INE2 SUD - Cloud &amp; IoT" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+      <Label fx:id="au4" layoutX="805.0" layoutY="150.0" prefHeight="25.0" prefWidth="192.0" text="✓Groupe:" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+      <Label fx:id="au5" layoutX="809.0" layoutY="174.0" prefHeight="25.0" prefWidth="192.0" text="Mabrouk Ziyad" textFill="#969494" visible="false" wrapText="true">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+      <Label fx:id="au6" layoutX="809.0" layoutY="195.0" prefHeight="25.0" prefWidth="192.0" text="Lansari Ibrahim" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+      <Label fx:id="au7" layoutX="808.0" layoutY="217.0" prefHeight="25.0" prefWidth="192.0" text="Quehlaoui Mohamed" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+      <Label fx:id="au8" layoutX="809.0" layoutY="239.0" prefHeight="25.0" prefWidth="192.0" text="Lahlou Mimi Mehdi" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+      <Label fx:id="au9" layoutX="809.0" layoutY="261.0" prefHeight="25.0" prefWidth="192.0" text="Abous Mohamed" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+      <Label fx:id="au10" layoutX="960.0" layoutY="293.0" prefHeight="15.0" prefWidth="43.0" text="2023-2024" textAlignment="JUSTIFY" textFill="#969494" visible="false" wrapText="true">
+         <font>
+            <Font name="System Italic" size="9.0" />
+         </font>
+      </Label>
    </children>
 </Pane>
