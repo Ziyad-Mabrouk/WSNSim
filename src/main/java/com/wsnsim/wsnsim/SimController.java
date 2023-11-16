@@ -503,6 +503,7 @@ public class SimController implements Initializable {
     }
     
     public void getNodeInfos(Node node) {
+        director = Director.getInstance();
         nodeTitle.setText("Noeud " + node.getId());
 
         nodeCanvas.getGraphicsContext2D().clearRect(0, 0, nodeCanvas.getWidth(), nodeCanvas.getHeight());

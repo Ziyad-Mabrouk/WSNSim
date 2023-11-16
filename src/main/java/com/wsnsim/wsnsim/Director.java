@@ -111,7 +111,7 @@ public class Director {
         if (directorHistory.numSaves() >= round_number+1) {
             return;
         }
-        ArrayList<Node> CHList = director.getCurrentCHList();
+        ArrayList<Node> CHList = getCurrentCHList();
         for (Node CH : CHList) {
             if (!CH.isOn()) {continue;}
             ArrayList<Node> potential_members = CH.getNeighbors();
@@ -135,7 +135,7 @@ public class Director {
         if (directorHistory.numSaves() >= round_number+1) {
             return;
         }
-        ArrayList<Node> CHList = director.getCurrentCHList();
+        ArrayList<Node> CHList = getCurrentCHList();
         for (Node CH : CHList) {
             CH.setLog(CH.getLog() + "Round: " + (round_number + 1) + " -> phase de transmission.\n");
             ArrayList<Node> members = CH.getCM();
@@ -243,7 +243,12 @@ public class Director {
     }
     public void save() {
         DirectorHistory directorHistory = DirectorHistory.getInstance();
-        DirectorMemento directorMemento = new DirectorMemento((ArrayList<Node>) listNodes.clone(), round_number, (ArrayList<Integer>) deadNodesPerRound.clone());
+        ArrayList<Node> clonedListNodes = new ArrayList<>();
+        for (Node node : listNodes) {
+            clonedListNodes.add(node.clone());
+        }
+        ArrayList<Integer> clonedDeadNodesPerRound = new ArrayList<>(deadNodesPerRound);
+        DirectorMemento directorMemento = new DirectorMemento(clonedListNodes, round_number, clonedDeadNodesPerRound);
         directorHistory.save(directorMemento);
     }
 
@@ -252,14 +257,14 @@ public class Director {
         DirectorMemento directorMemento = directorHistory.pop(index);
 
         // Deep copy the list of nodes
-        this.listNodes.clear();
+        listNodes.clear();
         for (Node node : directorMemento.getListNodes()) {
-            this.listNodes.add(node.clone());
+            listNodes.add(node.clone());
         }
 
         // Copy other primitive types
-        this.deadNodesPerRound = new ArrayList<>(directorMemento.getDeadNodesPerRound());
-        this.round_number = directorMemento.getRound_number();
+        deadNodesPerRound = new ArrayList<>(directorMemento.getDeadNodesPerRound());
+        round_number = directorMemento.getRound_number();
     }
 
 }

@@ -31,30 +31,16 @@ public class Node implements Cloneable {
         distanceToCH = 0;
     }
 
-    public Node(Node originalNode) {
-        this.id = originalNode.id;
-        this.x = originalNode.x;
-        this.y = originalNode.y;
-        this.radius = originalNode.radius;
-        this.isCH = new ArrayList<>(originalNode.isCH);
-        this.isOn = originalNode.isOn;
-
-        // Make sure the energy list is properly initialized
-        this.energy = new ArrayList<>(originalNode.energy.size());
-        for (Pair<Integer, Double> pair : originalNode.energy) {
-            this.energy.add(new Pair<>(pair.getKey(), pair.getValue()));
-        }
-
-        this.CH = originalNode.CH;
-        this.color = originalNode.color;
-        this.distanceToCH = originalNode.distanceToCH;
-        this.log = originalNode.log;
-    }
-
     @Override
     public Node clone() {
         try {
-            return (Node) super.clone();
+            Node cloned = (Node) super.clone();
+            // Perform deep copy for energy ArrayList
+            cloned.energy = new ArrayList<>();
+            for (Pair<Integer, Double> pair : this.energy) {
+                cloned.energy.add(new Pair<>(pair.getKey(), pair.getValue()));
+            }
+            return cloned;
         } catch (CloneNotSupportedException e) {
             return null;
         }
@@ -64,9 +50,6 @@ public class Node implements Cloneable {
         
     }
 
-    public Node copyTo() {
-        return new Node(this);
-    }
 
     private void setDistanceToCH(double distanceToCH) {
     }
