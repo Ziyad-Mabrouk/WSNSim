@@ -46,29 +46,7 @@ public class Node implements Cloneable {
         }
     }
 
-    public Node() {
-        
-    }
-
-
-    private void setDistanceToCH(double distanceToCH) {
-    }
-
-    private void setCH(Node ch) {
-    }
-
-    public void setY(int y) {
-    }
-
-    public void setX(int x) {
-    }
-
-    private void setId(int id) {
-    }
-
-    public double getDistanceToCH() {
-        return distanceToCH;
-    }
+    public Node() {}
 
     public int getId() {
         return id;
@@ -84,10 +62,6 @@ public class Node implements Cloneable {
 
     public ArrayList<Pair<Integer, Double>> getEnergy() {
         return this.energy;
-    }
-
-    public void setEnergy(ArrayList<Pair<Integer, Double>> energy) {
-        this.energy = energy;
     }
 
     public boolean isOn() {
@@ -186,7 +160,7 @@ public class Node implements Cloneable {
             eventCount++;
         }
 
-        double sensingEnergy = 50 * Math.pow(10, -6);
+        double sensingEnergy = Director.getInstance().getSensing_energy() * Math.pow(10, -6);
         double energyConsumed = sensingEnergy * eventCount;
 
         double updatedEnergy = energy.get(energy.size() - 1).getValue();
@@ -201,10 +175,11 @@ public class Node implements Cloneable {
     }
 
     public void updateTxEnergy(double distance, int roundNumber) {
-        double Elec = 50 * Math.pow(10, -9);
-        double l = 1.0;
-        double epsFs = 10 * Math.pow(10, -12);
-        double epsMp = 0.0013 * Math.pow(10, -12);
+        Director director = Director.getInstance();
+        double Elec = director.getElec() * Math.pow(10, -9);
+        double l = director.getL();
+        double epsFs = director.getEpsfs() * Math.pow(10, -9);
+        double epsMp = director.getEpsmp() * Math.pow(10, -9);
         double d0 = Math.sqrt(epsFs / epsMp);
         double Etx;
         if (distance < d0) {
@@ -242,8 +217,9 @@ public class Node implements Cloneable {
     }
 
     public void updateRxEnergy(int roundNumber) {
-        double Elec = 50 * Math.pow(10, -9);
-        double l = 1.0;
+        Director director = Director.getInstance();
+        double Elec = director.getElec() * Math.pow(10, -9);
+        double l = director.getL();
         double Erx = l * Elec;
 
         double E = energy.get(energy.size() - 1).getValue();

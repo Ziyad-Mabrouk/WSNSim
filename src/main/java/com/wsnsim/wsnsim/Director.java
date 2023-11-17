@@ -12,7 +12,7 @@ public class Director {
     private ArrayList<Node> listNodes = new ArrayList<>();
     private final RandomGenerator randomGenerator = new RandomGenerator();
     private int numNodes, roundDuration, formule, commRadius;
-    private double chDensity, E_max;
+    private double chDensity, E_max, Elec, epsfs, epsmp, l, sensing_energy;
     private int round_number = 0;
     private ArrayList<Integer> deadNodesPerRound = new ArrayList<>();
 
@@ -22,7 +22,7 @@ public class Director {
         this.gc = gc;
     }
 
-    public static Director getInstance(int numNodes, int roundDuration, double chDensity, int formule, int commRadius, double E_max, GraphicsContext gc, double canvasWidth, double canvasHeight) {
+    public static Director getInstance(int numNodes, int roundDuration, double chDensity, int formule, int commRadius, double E_max, double Eelc, double l, double epsfs, double epsmp, double sensing_energy, GraphicsContext gc, double canvasWidth, double canvasHeight) {
         if (director == null) {
             director = new Director(gc, canvasWidth, canvasHeight);
         }
@@ -32,6 +32,11 @@ public class Director {
         director.formule = formule;
         director.commRadius = commRadius;
         director.E_max = E_max;
+        director.Elec = Eelc;
+        director.l = l;
+        director.epsfs = epsfs;
+        director.epsmp = epsmp;
+        director.sensing_energy = sensing_energy;
 
         director.generateNodesList();
 
@@ -42,6 +47,25 @@ public class Director {
         return director;
     }
 
+    public double getElec() {
+        return Elec;
+    }
+
+    public double getEpsfs() {
+        return epsfs;
+    }
+
+    public double getEpsmp() {
+        return epsmp;
+    }
+
+    public double getL() {
+        return l;
+    }
+
+    public double getSensing_energy() {
+        return sensing_energy;
+    }
 
     public void drawNodes() {
         for (Node node : listNodes) {
@@ -155,7 +179,7 @@ public class Director {
                 i++;
             }
 
-            CH.transmitToSink(round_number);
+            if (members.size() != 0) {CH.transmitToSink(round_number);}
         }
         deadNodesPerRound.add(numOfDeadNodes());
 

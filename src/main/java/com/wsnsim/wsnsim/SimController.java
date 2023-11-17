@@ -115,6 +115,23 @@ public class SimController implements Initializable {
     private Label au10;
     @FXML
     private Rectangle auSubScene;
+    @FXML
+    private Accordion accordion;
+    @FXML
+    private TitledPane parametres;
+    @FXML
+    private TitledPane plus;
+    @FXML
+    private TextField Elec_TF;
+    @FXML
+    private TextField epsfs_TF;
+    @FXML
+    private TextField epsmp_TF;
+    @FXML
+    private TextField l_TF;
+    @FXML
+    private TextField sensing_energy_TF;
+    private double Eelc, epsfs, epsmp, l, sensing_energy;
     private Director director;
     private int numNodes, roundDuration, commRadius, formule = 1;
     private double E_max;
@@ -143,6 +160,8 @@ public class SimController implements Initializable {
         //communication_radius.setText("50");
         communication_radius.setDisable(false);
 
+        accordion.setDisable(false);
+
         formule1.setDisable(false);
         formule2.setDisable(false);
         formule3.setDisable(false);
@@ -155,7 +174,8 @@ public class SimController implements Initializable {
 
         round_number.setText("Round: 0");
         nbre_CH.setText("Nbre de CH: 0");
-        director.clear();
+
+        if (director != null) {director.clear();}
         DirectorHistory directorHistory = DirectorHistory.getInstance();
         directorHistory.clearHistory();
 
@@ -166,7 +186,7 @@ public class SimController implements Initializable {
 
     public void draw() {
         checkSelectedFormula();
-        director = Director.getInstance(numNodes, roundDuration, ch_density.getValue(), formule, commRadius, E_max , canvas.getGraphicsContext2D(), canvas.getWidth(), canvas.getHeight());
+        director = Director.getInstance(numNodes, roundDuration, ch_density.getValue(), formule, commRadius, E_max, Eelc, l, epsfs, epsmp, sensing_energy, canvas.getGraphicsContext2D(), canvas.getWidth(), canvas.getHeight());
         director.drawNodes();
     }
 
@@ -241,6 +261,9 @@ public class SimController implements Initializable {
         next.setDisable(false);
         infos.setDisable(false);
 
+        accordion.setExpandedPane(parametres);
+        accordion.setDisable(true);
+
         draw();
 
         director.setUp();
@@ -258,7 +281,7 @@ public class SimController implements Initializable {
     }
 
     public int getValues() {
-        int field1Valid = 0, field2Valid = 0, field3Valid = 0, field4Valid = 0;
+        int field1Valid = 0, field2Valid = 0, field3Valid = 0, field4Valid = 0, field5Valid = 0, field6Valid = 0, field7Valid = 0, field8Valid = 0, field9Valid = 0;
 
         try {
             numNodes = Integer.parseInt(nodes_number.getText());
@@ -294,7 +317,37 @@ public class SimController implements Initializable {
         } catch (NumberFormatException e) {
             showWarning("Valeur Invalide", "Le rayon de communication doit être un nombre naturel.");
         }
-        return field1Valid * field2Valid * field3Valid * field4Valid ;
+        try {
+            Eelc = Double.parseDouble(Elec_TF.getText());
+            field5Valid = 1;
+        } catch (NumberFormatException e) {
+            showWarning("Valeur Invalide", "Entrez un nombre décimal valide pour Elec.");
+        }
+        try {
+            epsfs = Double.parseDouble(epsfs_TF.getText());
+            field6Valid = 1;
+        } catch (NumberFormatException e) {
+            showWarning("Valeur Invalide", "Entrez un nombre décimal valide pour epsfs.");
+        }
+        try {
+            epsmp = Double.parseDouble(epsmp_TF.getText());
+            field7Valid = 1;
+        } catch (NumberFormatException e) {
+            showWarning("Valeur Invalide", "Entrez un nombre décimal valide pour epsmp.");
+        }
+        try {
+            l = Double.parseDouble(l_TF.getText());
+            field8Valid = 1;
+        } catch (NumberFormatException e) {
+            showWarning("Valeur Invalide", "Entrez un nombre décimal valide pour l.");
+        }
+        try {
+            sensing_energy = Double.parseDouble(sensing_energy_TF.getText());
+            field9Valid = 1;
+        } catch (NumberFormatException e) {
+            showWarning("Valeur Invalide", "Entrez un nombre décimal valid pour l'énergie de capture.");
+        }
+        return field1Valid * field2Valid * field3Valid * field4Valid * field5Valid * field6Valid * field7Valid * field8Valid * field9Valid;
     }
 
     public void showWarning(String title, String Description) {
@@ -384,6 +437,21 @@ public class SimController implements Initializable {
             au9.setVisible(false);
             au10.setVisible(false);
         });
+
+        accordion.setExpandedPane(parametres);
+        //parametres.setExpanded(true);
+        //parametres.setExpanded(false);
+        if (accordion != null) {
+            accordion.expandedPaneProperty().addListener((obs, oldPane, newPane) -> {
+                if (newPane == null) {
+                    if (oldPane == parametres) {
+                        plus.setExpanded(true);
+                    } else {
+                        parametres.setExpanded(true);
+                    }
+                }
+            });
+        }
 
     }
 
