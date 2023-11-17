@@ -375,7 +375,7 @@ public class Node implements Cloneable {
         ArrayList<Node> listNodes = director.getCurrentNonCHList();
 
         for (Node node : listNodes) {
-            if (node.getCH().equals(this)) {
+            if (node.getCH().getId() == id) {
                 CM.add(node);
             }
         }

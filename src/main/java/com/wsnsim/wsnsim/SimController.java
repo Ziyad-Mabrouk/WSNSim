@@ -119,6 +119,7 @@ public class SimController implements Initializable {
     private int numNodes, roundDuration, commRadius, formule = 1;
     private double E_max;
     private Node selectedNode;
+    private int maxNbreNodes = 200;
 
     @FXML
     public void quit() {Platform.exit();}
@@ -262,10 +263,11 @@ public class SimController implements Initializable {
         try {
             numNodes = Integer.parseInt(nodes_number.getText());
             field1Valid = 1;
-            if (numNodes > 100) {
-                numNodes = 100;
+            if (numNodes > maxNbreNodes) {
+                numNodes = maxNbreNodes;
                 warning.setVisible(true);
-                nodes_number.setText("100");
+                warning.setText("*max=" + maxNbreNodes);
+                nodes_number.setText(String.valueOf(maxNbreNodes));
             }
         } catch (NumberFormatException e) {
             showWarning("Valeur Invalide", "Le nombre de noeuds doit être un nombre naturel.");
