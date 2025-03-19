@@ -17,3 +17,5 @@ Vous pouvez aussi executer le fichier .jar. Pour le faire, utilisez la commande 
 ## Rapport Détaillé:
 
 [rapport wsn.pdf](https://github.com/Ziyad-Mabrouk/WSNSim/files/14814397/rapport.wsn.pdf)
+
+![image](https://github.com/user-attachments/assets/aefac65d-a996-43bc-b145-faac941c1db2)
